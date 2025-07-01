@@ -5,28 +5,45 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Image from "next/image"; // Or the image component you use
+import Image from "next/image";
 
 export default function PostImageCarousel ({ images }) {
   if (!images?.length) {
     return;
   }
 
+  // Helper function to check if URL is a video
+  const isVideo = (url) => {
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+    return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+  };
+
   return (
     <Carousel className="w-full mb-4">
       <CarouselContent>
-        { images.map((img, idx) => (
+        { images.map((media, idx) => (
           <CarouselItem key={ idx } className="flex justify-center">
             <div className="max-w-md w-full max-h-[40rem]">
-              <Image
-                src={ img }
-                alt={ `Post visual ${idx + 1}` }
-                width={ 400 }
-                height={ 0 }
-                className="w-full h-auto max-h-[40rem] object-contain rounded-md"
-                sizes="(max-width: 768px) 100vw, 400px"
-                priority={ idx === 0 }
-              />
+              {isVideo(media) ? (
+                <video
+                  src={media}
+                  controls
+                  className="w-full h-auto max-h-[40rem] object-contain rounded-md"
+                  preload="metadata"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <Image
+                  src={ media }
+                  alt={ `Post visual ${idx + 1}` }
+                  width={ 400 }
+                  height={ 0 }
+                  className="w-full h-auto max-h-[40rem] object-contain rounded-md"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  priority={ idx === 0 }
+                />
+              )}
             </div>
           </CarouselItem>
         )) }
