@@ -1,31 +1,37 @@
 'use client';
 import { MessageCircle } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import Comments from "@/components/container/Comments";
 import { useState } from "react";
+import PostImageCarousel from "@/components/container/PostImageCarousel";
 
-export default function PostContainer ({
-    posts = {
-        title: "A strong volunteer, cleaning up after the recent airstrike in Kyiv",
-        votes: "16k",
-        username: "Username",
-        time: "5 hours ago",
-        comments: 123,
-        image: null,
-    }
-}) {
-    const {
-        title,
-        votes,
-        username,
-        time,
-        comments,
-        image
-    } = posts;
+export default function PostContainer ({ data }) {
+    const username = data.id;
+    const title = data.title;
+    const content = data.selftext;
+    const commentCount = data.num_comments;
+    const commentsUrl = `https://www.reddit.com/${data.permalink}`;
+    const media = data.media_metadata
+        ? Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'))
+        : [];
+
+    const votes = data.ups;
+    const postCreated = data.created_utc;
+    const diff = Date.now() / 1000 - postCreated;
+    const timeAgo =
+        diff < 60
+            ? `${Math.floor(diff)} second${Math.floor(diff) !== 1 ? 's' : ''} ago`
+            : diff < 3600
+                ? `${Math.floor(diff / 60)} minute${Math.floor(diff / 60) !== 1 ? 's' : ''} ago`
+                : diff < 86400
+                    ? `${Math.floor(diff / 3600)} hour${Math.floor(diff / 3600) !== 1 ? 's' : ''} ago`
+                    : `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) !== 1 ? 's' : ''} ago`;
+
 
     const [openComments, setOpenComments] = useState(false);
+
+    console.log(username.length[0]);
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
             <div className="flex items-start">
@@ -38,14 +44,11 @@ export default function PostContainer ({
                 {/* Post Content */ }
                 <div className="flex-1">
                     <div className="pt-4 pr-4">
-                        <h2 className="text-white font-semibold text-base mb-2 leading-snug">{ title }</h2>
-                        <AspectRatio ratio={ 16 / 9 } className="bg-[#232324] rounded-md w-full mb-4">
-                            { image ? (
-                                <img src={ image } alt="Post visual" className="object-cover w-full h-full rounded-md" />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[#444] text-sm">Image Placeholder</div>
-                            ) }
-                        </AspectRatio>
+                        <h1 className="text-white font-semibold text-[2rem] mb-1 leading-snug">{ title }</h1>
+                        <PostImageCarousel images={ media } />
+                        { content && (
+                            <p className="text-[#818384] text-sm mb-2">{ content }</p>
+                        ) }
                     </div>
                     {/* Footer */ }
                     <div className="flex items-center justify-between pr-4 pb-2">
@@ -55,15 +58,18 @@ export default function PostContainer ({
                             </Avatar>
                             <span className="text-xs text-white font-medium">{ username }</span>
                         </div>
-                        <div className="flex items-center gap-2"><span className="text-xs text-[#818384]">{ time }</span></div>
+                        <div className="flex items-center gap-2"><span className="text-xs text-[#818384]">{ timeAgo }</span></div>
                         <div className="flex items-center gap-1 text-[#818384] cursor-pointer" onClick={ () => setOpenComments(!openComments) }>
                             <MessageCircle className="w-4 h-4" />
-                            <span className="text-xs">{ comments }</span>
+                            <span className="text-xs">{ commentCount }</span>
                         </div>
                     </div>
-                    <div className="pr-4 pb-4 mt-2">
-                        <Comments open={ openComments } />
-                    </div>
+                    {/* Comments Section */ }
+                    { openComments &&
+                        <div className="pr-4 pb-4 mt-2">
+                            <Comments open={ commentsUrl } />
+                        </div>
+                    }
                 </div>
             </div>
         </div>

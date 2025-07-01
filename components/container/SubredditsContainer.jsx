@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-
+import { loadPostsBySubreddit } from "@/lib/features/post/postSlice";
+import { useDispatch } from "react-redux";
+import {useEffect} from "react";
 
 const subreddits = [
   { name: "wallstreetbets", icon: "subredditsIcon/wallstreetbets.png", fallback: "W" },
@@ -19,7 +20,17 @@ const subreddits = [
 
 export default function SubredditsContainer () {
   const [selected, setSelected] = useState(0);
+  const dispatch = useDispatch();
 
+useEffect(() => {
+  const subreddit = subreddits[selected].name;
+  dispatch(loadPostsBySubreddit(subreddit));
+}, [dispatch, selected]);
+  
+const handleSubredditClick = (index) => {
+  setSelected(index); 
+};
+  
   return (
     <aside className="hidden lg:block w-72 shrink-0">
       <Card className="sticky top-16 bg-[#161617] border-[#222] p-4">
@@ -31,10 +42,10 @@ export default function SubredditsContainer () {
             <li key={ idx } >
               <button
                 className={ `w-full flex items-center gap-3 px-2 py-2 rounded-lg transition-colors text-left cursor-pointer ${selected === idx
-                    ? "bg-[#232324] text-white"
-                    : "hover:bg-[#232324] text-[#e0e0e0]"
+                  ? "bg-[#232324] text-white"
+                  : "hover:bg-[#232324] text-[#e0e0e0]"
                   }` }
-                onClick={ () => setSelected(idx) }
+                onClick={ () => handleSubredditClick(idx) }
               >
                 <Avatar>
                   <AvatarImage src={ sub.icon } alt={ sub.icon } />
