@@ -30,7 +30,7 @@ export default function Home () {
         {/* Posts/Main Content */ }
         <main className="flex-1 gap-4 flex flex-col py-2">
           {
-            postsStatus === "loading" && (
+            postsStatus === "loading" ? (
               <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
                 <div className="flex items-start">
                   {/* Upvote/Downvote */ }
@@ -60,14 +60,8 @@ export default function Home () {
                   </div>
                 </div>
               </div>
-            ) || postsStatus === "failed" && (
+            ) : postsStatus === "failed" ? (
               <div className="bg-red-500 text-white p-4 rounded-lg"><p>Failed to load posts. Please try again later.</p></div>
-            ) || Object.values(posts).length === 0 ? (
-              <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
-                <div className="flex items-center justify-center h-64">
-                  <p className="text-gray-500">No posts available. Please Select a Subreddit on the right.</p>
-                </div>
-              </div>
             ) : (
               posts.map((post, idx) => (
                 <PostContainer key={ idx } data={ post.data } />

@@ -7,7 +7,7 @@ import { useState } from "react";
 import PostImageCarousel from "@/components/container/PostImageCarousel";
 
 export default function PostContainer ({ data }) {
-    const username = data.id;
+    const username = data.author;
     const title = data.title;
     const content = data.selftext;
     const commentCount = data.num_comments;
@@ -15,7 +15,6 @@ export default function PostContainer ({ data }) {
     const media = data.media_metadata
         ? Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'))
         : [];
-
     const votes = data.ups;
     const postCreated = data.created_utc;
     const diff = Date.now() / 1000 - postCreated;
@@ -31,7 +30,6 @@ export default function PostContainer ({ data }) {
 
     const [openComments, setOpenComments] = useState(false);
 
-    console.log(username.length[0]);
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
             <div className="flex items-start">
