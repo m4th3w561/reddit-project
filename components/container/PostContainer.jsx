@@ -3,17 +3,28 @@ import { MessageCircle } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
-import Comments from "@/components/Comments";
+import Comments from "@/components/container/Comments";
 import { useState } from "react";
 
 export default function PostContainer ({
-    title = "A strong volunteer, cleaning up after the recent airstrike in Kyiv",
-    votes = "16k",
-    username = "Username",
-    time = "5 hours ago",
-    comments = 123,
-    image = null, // pass image URL or null for placeholder
+    posts = {
+        title: "A strong volunteer, cleaning up after the recent airstrike in Kyiv",
+        votes: "16k",
+        username: "Username",
+        time: "5 hours ago",
+        comments: 123,
+        image: null,
+    }
 }) {
+    const {
+        title,
+        votes,
+        username,
+        time,
+        comments,
+        image
+    } = posts;
+
     const [openComments, setOpenComments] = useState(false);
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
