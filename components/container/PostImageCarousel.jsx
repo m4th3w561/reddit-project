@@ -31,9 +31,13 @@ export default function PostImageCarousel ({ images }) {
           </CarouselItem>
         )) }
       </CarouselContent>
-      {/* Built-in arrows */ }
-      <CarouselPrevious className="left-2 cursor-pointer" />
-      <CarouselNext className="right-2 cursor-pointer" />
+      {/* Built-in arrows - only show if more than 1 image */ }
+      {images.length > 1 && (
+        <>
+          <CarouselPrevious className="left-2 cursor-pointer" />
+          <CarouselNext className="right-2 cursor-pointer" />
+        </>
+      )}
       {/* Dots are built-in and can be customized if you want */ }
     </Carousel>
   );
