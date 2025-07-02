@@ -7,7 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { postsData, postsStatus, postsError } from "@/lib/features/post/postSlice";
 
@@ -15,12 +15,33 @@ export default function Home() {
   const posts = useSelector(postsData);
   const status = useSelector(postsStatus);
   const error = useSelector(postsError);
+  const [visiblePosts, setVisiblePosts] = useState(5); // Only show 5 posts initially
 
   useEffect(() => {
     if (status === "failed" && error) {
       toast.error(`Failed to load posts: ${error}`);
     }
   }, [status, error]);
+
+  // Memoize posts to prevent unnecessary re-renders
+  const memoizedPosts = useMemo(() => {
+    return posts.slice(0, visiblePosts);
+  }, [posts, visiblePosts]);
+
+  // Load more posts when user scrolls near bottom
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop
+        >= document.documentElement.offsetHeight - 1000
+      ) {
+        setVisiblePosts(prev => Math.min(prev + 3, posts.length));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [posts.length]);
 
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-8">
@@ -30,40 +51,48 @@ export default function Home() {
         {/* Posts/Main Content */}
         <main className="flex-1 gap-4 flex flex-col py-2 min-w-0">
           {status === "loading" ? (
-            <>
-              {[...Array(4)].map((_, index) => (
-                <div key={index} className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
-                  <div className="flex items-start">
-                    <div className="flex flex-col items-center px-2 pt-4 select-none">
-                      <Skeleton className="h-6 w-6 mb-1" />
-                      <Skeleton className="h-4 w-6 mb-1" />
-                      <Skeleton className="h-6 w-6" />
+            // Reduced skeleton items to improve performance
+            [...Array(3)].map((_, index) => (
+              <div key={index} className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
+                <div className="flex items-start">
+                  {/* Upvote/Downvote */}
+                  <div className="flex flex-col items-center px-2 pt-4 select-none shrink-0">
+                    <Skeleton className="h-6 w-6 mb-1" />
+                    <Skeleton className="h-4 w-6 mb-1" />
+                    <Skeleton className="h-6 w-6" />
+                  </div>
+                  {/* Post Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="pt-4 pr-4">
+                      <Skeleton className="h-6 w-3/4 mb-2" />
+                      <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md w-full mb-4">
+                        <Skeleton className="w-full h-full rounded-md" />
+                      </AspectRatio>
+                      <Skeleton className="h-4 w-1/2 mb-2" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="pt-4 pr-4">
-                        <Skeleton className="h-5 w-3/4 mb-2" />
-                        <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md w-full mb-4">
-                          <Skeleton className="w-full h-full rounded-md" />
-                        </AspectRatio>
-                        <Skeleton className="h-5 w-3/4 mb-2" />
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pr-4 pb-2">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                        <Skeleton className="h-4 w-20" />
                       </div>
-                      <div className="flex items-center justify-between pr-4 pb-2">
-                        <div className="flex items-center gap-2">
-                          <Skeleton className="h-8 w-8 rounded-full" />
-                          <Skeleton className="h-4 w-20" />
-                        </div>
-                        <Skeleton className="h-4 w-12" />
-                        <Skeleton className="h-4 w-10" />
-                      </div>
+                      <Skeleton className="h-4 w-10" />
                     </div>
                   </div>
                 </div>
-              ))}
-            </>
-          ) : (
-            posts.map((post, idx) => (
-              <PostContainer key={idx} data={post.data} />
+              </div>
             ))
+          ) : (
+            <>
+              {memoizedPosts.map((post, idx) => (
+                <PostContainer key={`${post.data.id}-${idx}`} data={post.data} />
+              ))}
+              {visiblePosts < posts.length && (
+                <div className="flex justify-center py-4">
+                  <Skeleton className="h-8 w-48" />
+                </div>
+              )}
+            </>
           )}
         </main>
         <SubredditsContainer />
