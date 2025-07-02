@@ -8,10 +8,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { Navbar } from "@/components/container/Navbar";
 import SubredditsContainer from "@/components/container/SubredditsContainer";
+import MobileSidebar from "@/components/container/MobileSidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-export default function SubredditPage () {
+export default function SubredditPage() {
     const { subreddit } = useParams();
     const posts = useSelector(postsData);
     const status = useSelector(postsStatus);
@@ -24,31 +25,31 @@ export default function SubredditPage () {
     }, [status, error]);
     
     return (
-        <div className="min-h-screen px-8">
+        <div className="min-h-screen px-4 sm:px-6 lg:px-8">
             <Navbar />
-            <div className="flex w-full max-w-6xl mx-auto gap-8">
-                <main className="flex-1 gap-4 flex flex-col py-2">
-
-                    { status === "loading" &&
+            <MobileSidebar />
+            <div className="flex w-full max-w-6xl mx-auto gap-4 lg:gap-8">
+                <main className="flex-1 gap-4 flex flex-col py-2 min-w-0">
+                    {status === "loading" &&
                         [...Array(4)].map((_, index) => (
-                            <div key={ index } className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
+                            <div key={index} className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
                                 <div className="flex items-start">
-                                    {/* Upvote/Downvote */ }
+                                    {/* Upvote/Downvote */}
                                     <div className="flex flex-col items-center px-2 pt-4 select-none">
                                         <Skeleton className="h-6 w-6 mb-1" />
                                         <Skeleton className="h-4 w-6 mb-1" />
                                         <Skeleton className="h-6 w-6" />
                                     </div>
-                                    {/* Post Content */ }
-                                    <div className="flex-1">
+                                    {/* Post Content */}
+                                    <div className="flex-1 min-w-0">
                                         <div className="pt-4 pr-4">
                                             <Skeleton className="h-5 w-3/4 mb-2" />
-                                            <AspectRatio ratio={ 16 / 9 } className="bg-[#232324] rounded-md w-full mb-4">
+                                            <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md w-full mb-4">
                                                 <Skeleton className="w-full h-full rounded-md" />
                                             </AspectRatio>
                                             <Skeleton className="h-5 w-3/4 mb-2" />
                                         </div>
-                                        {/* Footer */ }
+                                        {/* Footer */}
                                         <div className="flex items-center justify-between pr-4 pb-2">
                                             <div className="flex items-center gap-2">
                                                 <Skeleton className="h-8 w-8 rounded-full" />
@@ -62,10 +63,10 @@ export default function SubredditPage () {
                             </div>
                         ))
                     }
-                    { status === "succeeded" && posts.length === 0 && <div>No posts found.</div> }
-                    { status === "succeeded" && posts.map((post, idx) => (
-                        <PostContainer key={ idx } data={ post.data } />
-                    )) }
+                    {status === "succeeded" && posts.length === 0 && <div>No posts found.</div>}
+                    {status === "succeeded" && posts.map((post, idx) => (
+                        <PostContainer key={idx} data={post.data} />
+                    ))}
                 </main>
                 <SubredditsContainer />
             </div>

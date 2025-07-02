@@ -68,41 +68,43 @@ export default function PostContainer ({ data, fromSearch = false }) {
     };
 
     return (
-        <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
+        <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
             <div className="flex items-start">
-                {/* Upvote/Downvote */ }
-                <div className="flex flex-col items-center px-2 pt-4 select-none">
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleUpVote }>▲</Button>
-                    <span className="text-xs text-[#818384] font-semibold py-1">{ votes }</span>
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleDownVote }>▼</Button>
+                {/* Upvote/Downvote */}
+                <div className="flex flex-col items-center px-1 sm:px-2 pt-4 select-none shrink-0">
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-6 w-6 sm:h-8 sm:w-8" onClick={handleUpVote}>▲</Button>
+                    <span className="text-xs text-[#818384] font-semibold py-1">{votes}</span>
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-6 w-6 sm:h-8 sm:w-8" onClick={handleDownVote}>▼</Button>
                 </div>
-                {/* Post Content */ }
-                <div className="flex-1">
-                    <div className="pt-4 pr-4">
-                        <h1 className="text-white font-semibold text-[2rem] mb-1 leading-snug">{ title }</h1>
-                        { media.length > 0 && <PostImageCarousel images={ media } /> }
-                        { content && (
-                            <p className="text-[#818384] text-sm mb-2">{ content }</p>
-                        ) }
+                {/* Post Content */}
+                <div className="flex-1 min-w-0">
+                    <div className="pt-4 pr-2 sm:pr-4">
+                        <h1 className="text-white font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl mb-1 leading-tight break-words">{title}</h1>
+                        {media.length > 0 && <PostImageCarousel images={media} />}
+                        {content && (
+                            <p className="text-[#818384] text-sm mb-2 break-words">{content}</p>
+                        )}
                     </div>
-                    {/* Footer */ }
-                    <div className="flex items-center justify-between pr-4 pb-2">
-                        <div className="flex items-center gap-2">
-                            <Avatar>
-                                <AvatarFallback>{ username[0] }</AvatarFallback>
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pr-2 sm:pr-4 pb-2 gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                            <Avatar className="h-6 w-6 sm:h-8 sm:w-8 shrink-0">
+                                <AvatarFallback>{username[0]}</AvatarFallback>
                             </Avatar>
-                            <span className="text-xs text-white font-medium">{ username }</span>
+                            <span className="text-xs text-white font-medium truncate">{username}</span>
                         </div>
-                        <div className="flex items-center gap-2"><span className="text-xs text-[#818384]">{ timeAgo }</span></div>
-                        <div className="flex items-center gap-1 text-[#818384] cursor-pointer" onClick={ () => setOpenComments(!openComments) }>
-                            <MessageCircle className="w-4 h-4" />
-                            <span className="text-xs">{ commentCount }</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                            <span className="text-xs text-[#818384] hidden sm:block">{timeAgo}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[#818384] cursor-pointer shrink-0" onClick={() => setOpenComments(!openComments)}>
+                            <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span className="text-xs">{commentCount}</span>
                         </div>
                     </div>
-                    {/* Comments Section */ }
-                    { openComments &&
-                        <div className="pr-4 pb-4 mt-2" >
-                            <Comments open={ openComments } url={ commentsUrl } />
+                    {/* Comments Section */}
+                    {openComments &&
+                        <div className="pr-2 sm:pr-4 pb-4 mt-2">
+                            <Comments open={openComments} url={commentsUrl} />
                         </div>
                     }
                 </div>

@@ -30,38 +30,38 @@ export default function Comments ({ open, url }) {
 
     return (
         <div className="space-y-2">
-            { status === "loading" ? (
+            {status === "loading" ? (
                 <>
-                    { [...Array(4)].map((_, index) => (
-                        <div key={ index } className="bg-[#232324] rounded-md p-3">
+                    {[...Array(4)].map((_, index) => (
+                        <div key={index} className="bg-[#232324] rounded-md p-2 sm:p-3">
                             <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center gap-2">
-                                    <Skeleton className="w-5 h-5 rounded-full" />
-                                    <Skeleton className="h-3 w-20" />
+                                    <Skeleton className="w-4 h-4 sm:w-5 sm:h-5 rounded-full" />
+                                    <Skeleton className="h-3 w-16 sm:w-20" />
                                 </div>
-                                <Skeleton className="h-3 w-16" />
+                                <Skeleton className="h-3 w-12 sm:w-16" />
                             </div>
-                            <div className="pl-7">
+                            <div className="pl-6 sm:pl-7">
                                 <Skeleton className="h-4 w-full mb-1" />
                                 <Skeleton className="h-4 w-3/4" />
                             </div>
-                            <div className="flex items-center px-2 pt-4">
-                                <Skeleton className="h-6 w-6 mr-1" />
-                                <Skeleton className="h-4 w-8 mx-1" />
-                                <Skeleton className="h-6 w-6 ml-1" />
+                            <div className="flex items-center px-1 sm:px-2 pt-3 sm:pt-4">
+                                <Skeleton className="h-5 w-5 sm:h-6 sm:w-6 mr-1" />
+                                <Skeleton className="h-4 w-6 sm:w-8 mx-1" />
+                                <Skeleton className="h-5 w-5 sm:h-6 sm:w-6 ml-1" />
                             </div>
                         </div>
-                    )) }
+                    ))}
                 </>
             ) : data.length === 0 ? (
-                <div className="text-center text-muted-foreground">No comments yet.</div>
+                <div className="text-center text-muted-foreground text-sm">No comments yet.</div>
             ) : (
                 data
                   .filter(comment => comment && comment.data && comment.data.body)
                   .map((comment) => (
-                    <Comment key={ comment.data.id } comment={ comment } />
+                    <Comment key={comment.data.id} comment={comment} />
                   ))
-            ) }
+            )}
         </div>
     );
 }
