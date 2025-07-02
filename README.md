@@ -1,37 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Reddit Clone
+
+A full-stack Reddit clone built with Next.js, React, Redux Toolkit, and Tailwind CSS. This project demonstrates a modern, responsive, and interactive Reddit-like experience, including subreddit browsing, post voting, comments, and search functionality.
+
+## Features
+
+- **Browse Subreddits:** View posts from popular subreddits with subreddit icons.
+- **Search Posts:** Search Reddit posts by keyword and view results instantly.
+- **Post Voting:** Upvote and downvote posts, with real-time UI updates.
+- **Comments:** Expand/collapse comments for each post, with loading states and error handling.
+- **Responsive UI:** Mobile-friendly, dark-themed interface using Tailwind CSS and shadcn/ui components.
+- **Redux State Management:** Uses Redux Toolkit for posts, search, and comments state.
+- **Skeleton Loading:** Animated skeletons for loading states.
+- **Error Handling:** Toast notifications for errors and user feedback.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (App Router, SSR, API routes)
+- [React](https://react.dev/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Lucide Icons](https://lucide.dev/)
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Open your browser:**
+   Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/` — Next.js app directory (pages, layout, providers)
+- `components/` — UI and container components (Navbar, PostContainer, Comments, etc.)
+- `lib/` — Redux slices, hooks, and utilities
+- `public/` — Static assets (icons, subreddit images)
 
-## Learn More
+## Key Files
 
-To learn more about Next.js, take a look at the following resources:
+- `app/page.jsx` — Home page, displays posts and subreddits
+- `app/search/[query]/page.jsx` — Search results page
+- `app/subreddit/[subreddit]/page.jsx` — Subreddit-specific posts
+- `components/container/PostContainer.jsx` — Post display, voting, and comments
+- `components/container/Comments.jsx` — Comments section for posts
+- `lib/features/` — Redux slices for posts, search, and comments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Customization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Add Subreddits:** Edit `components/container/SubredditsContainer.jsx` to add or remove subreddits and icons.
+- **Styling:** Modify `app/globals.css` and Tailwind config for custom themes.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `dev` — Start development server
+- `build` — Build for production
+- `start` — Start production server
+- `lint` — Run ESLint
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# reddit-project
+## Dependencies
+
+See `package.json` for a full list. Key dependencies include:
+- `next`, `react`, `redux`, `@reduxjs/toolkit`, `tailwindcss`, `shadcn/ui`, `lucide-react`, `sonner`
+
+## License
+
+This project is for educational and portfolio purposes only.
+
+---
+
+Inspired by Reddit. Built as a Codecademy portfolio project.
