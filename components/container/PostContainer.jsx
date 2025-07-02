@@ -4,14 +4,18 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Comments from "@/components/container/Comments";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PostImageCarousel from "@/components/container/PostImageCarousel";
+import { upVote, downVote } from "@/lib/features/post/postSlice";
+import { loadCommentsByPost, commentsData, commentsStatus, commentsError } from "@/lib/features/comments/commentsSlice";
 
 export default function PostContainer ({ data }) {
+    const postId = data.id;
     const username = data.author;
     const title = data.title;
     const content = data.selftext;
     const commentCount = data.num_comments;
-    const commentsUrl = `https://www.reddit.com/${data.permalink}`;
+    const commentsUrl = data.permalink;
     const media = data.media_metadata
         ? Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'))
         : [];
@@ -28,16 +32,31 @@ export default function PostContainer ({ data }) {
                     : `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) !== 1 ? 's' : ''} ago`;
 
 
+    // State to manage comments visibility
     const [openComments, setOpenComments] = useState(false);
+    const dispatch = useDispatch();
 
+    // Handlers for upvote and downvote actions
+    const handleUpVote = () => {
+        dispatch(upVote(postId));
+    };
+    const handleDownVote = () => {
+        dispatch(downVote(postId));
+    };
+
+
+
+    const handleComments = () => {
+        setOpenComments(!openComments);
+    };
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
             <div className="flex items-start">
                 {/* Upvote/Downvote */ }
                 <div className="flex flex-col items-center px-2 pt-4 select-none">
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer">▲</Button>
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleUpVote }>▲</Button>
                     <span className="text-xs text-[#818384] font-semibold py-1">{ votes }</span>
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer">▼</Button>
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleDownVote }>▼</Button>
                 </div>
                 {/* Post Content */ }
                 <div className="flex-1">
@@ -64,8 +83,8 @@ export default function PostContainer ({ data }) {
                     </div>
                     {/* Comments Section */ }
                     { openComments &&
-                        <div className="pr-4 pb-4 mt-2">
-                            <Comments open={ commentsUrl } />
+                        <div className="pr-4 pb-4 mt-2" onClick={ ()=> handleComments() }>
+                            <Comments open={ openComments } url={ commentsUrl }/>
                         </div>
                     }
                 </div>

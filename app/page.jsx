@@ -1,13 +1,13 @@
 "use client";
 import PostContainer from "@/components/container/PostContainer";
 import SubredditsContainer from "@/components/container/SubredditsContainer";
-import { useSelector } from "react-redux";
-import { postsData, postsStatus, postsError } from "@/lib/features/post/postSlice";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { postsData, postsStatus, postsError } from "@/lib/features/post/postSlice";
 
 
 export default function Home () {
@@ -15,9 +15,6 @@ export default function Home () {
   const status = useSelector(postsStatus);
   const error = useSelector(postsError);
 
-  console.log('Redux State:', { posts, status, error });
-
-  // Show error toast when status is failed
   useEffect(() => {
     if (status === "failed" && error) {
       toast.error(`Failed to load posts: ${error}`);
@@ -27,7 +24,7 @@ export default function Home () {
   return (
     <div className="min-h-screen px-8">
       <div className="flex w-full max-w-6xl mx-auto gap-8">
-        {/* Posts/Main Content */ }
+        {/* Posts/Main Content */ } 
         <main className="flex-1 gap-4 flex flex-col py-2">
           {
             status === "loading" ? (
