@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://impostereddit.netlify.app/sitemap.xml

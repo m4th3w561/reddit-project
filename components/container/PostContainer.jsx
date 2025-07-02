@@ -71,37 +71,37 @@ export default function PostContainer ({ data, fromSearch = false }) {
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
             <div className="flex items-start">
                 {/* Upvote/Downvote */ }
-                <div className="flex flex-col items-center px-2 pt-4 select-none">
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleUpVote }>▲</Button>
+                <div className="flex flex-col items-center px-1 sm:px-2 pt-2 sm:pt-4 select-none">
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-8 w-8 sm:h-10 sm:w-10 min-h-[44px]" onClick={ handleUpVote }>▲</Button>
                     <span className="text-xs text-[#818384] font-semibold py-1">{ votes }</span>
-                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer" onClick={ handleDownVote }>▼</Button>
+                    <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-8 w-8 sm:h-10 sm:w-10 min-h-[44px]" onClick={ handleDownVote }>▼</Button>
                 </div>
                 {/* Post Content */ }
                 <div className="flex-1">
-                    <div className="pt-4 pr-4">
-                        <h1 className="text-white font-semibold text-[2rem] mb-1 leading-snug">{ title }</h1>
+                    <div className="pt-2 sm:pt-4 pr-2 sm:pr-4">
+                        <h1 className="text-white font-semibold text-lg sm:text-xl lg:text-2xl xl:text-[2rem] mb-1 leading-snug">{ title }</h1>
                         { media.length > 0 && <PostImageCarousel images={ media } /> }
                         { content && (
                             <p className="text-[#818384] text-sm mb-2">{ content }</p>
                         ) }
                     </div>
                     {/* Footer */ }
-                    <div className="flex items-center justify-between pr-4 pb-2">
-                        <div className="flex items-center gap-2">
-                            <Avatar>
-                                <AvatarFallback>{ username[0] }</AvatarFallback>
+                    <div className="flex items-center justify-between pr-2 sm:pr-4 pb-2 gap-2">
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                            <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
+                                <AvatarFallback className="text-xs sm:text-sm">{ username[0] }</AvatarFallback>
                             </Avatar>
-                            <span className="text-xs text-white font-medium">{ username }</span>
+                            <span className="text-xs sm:text-sm text-white font-medium truncate">{ username }</span>
                         </div>
-                        <div className="flex items-center gap-2"><span className="text-xs text-[#818384]">{ timeAgo }</span></div>
-                        <div className="flex items-center gap-1 text-[#818384] cursor-pointer" onClick={ () => setOpenComments(!openComments) }>
+                        <div className="flex items-center gap-2"><span className="text-xs text-[#818384] whitespace-nowrap">{ timeAgo }</span></div>
+                        <div className="flex items-center gap-1 text-[#818384] cursor-pointer min-h-[44px] min-w-[44px] justify-center" onClick={ () => setOpenComments(!openComments) }>
                             <MessageCircle className="w-4 h-4" />
                             <span className="text-xs">{ commentCount }</span>
                         </div>
                     </div>
                     {/* Comments Section */ }
                     { openComments &&
-                        <div className="pr-4 pb-4 mt-2" >
+                        <div className="pr-2 sm:pr-4 pb-4 mt-2" >
                             <Comments open={ openComments } url={ commentsUrl } />
                         </div>
                     }
