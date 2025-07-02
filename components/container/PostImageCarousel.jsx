@@ -15,7 +15,7 @@ export default function PostImageCarousel ({ images }) {
   // Helper function to check if URL is a video
   const isVideo = (url) => {
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
-    return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+    return videoExtensions.some(ext => url.toLowerCase().includes(ext)) || url.includes("v.redd.it");
   };
 
   return (

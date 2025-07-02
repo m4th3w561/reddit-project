@@ -16,9 +16,28 @@ export default function PostContainer ({ data }) {
     const content = data.selftext;
     const commentCount = data.num_comments;
     const commentsUrl = data.permalink;
-    const media = data.media_metadata
-        ? Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'))
-        : [];
+    // Helper to check if a URL is an image
+    const isImageUrl = (url) => {
+        return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+    };
+    const isVideoUrl = (url) => {
+        return /\.(mp4|webm|ogg|mov|avi)$/i.test(url) || url?.includes("v.redd.it");
+    };
+
+    let media = [];
+    if (data.media_metadata) {
+        media = Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'));
+    } else if (data.media && data.media.reddit_video && data.media.reddit_video.fallback_url) {
+        // If it's a Reddit video, use the fallback_url
+        media = [data.media.reddit_video.fallback_url];
+    } else if (isImageUrl(data.url)) {
+        media = [data.url];
+    } else if (isVideoUrl(data.url)) {
+        media = [data.url];
+    } else {
+        media = [];
+    }
+
     const votes = data.ups;
     const postCreated = data.created_utc;
     const diff = Date.now() / 1000 - postCreated;
@@ -62,7 +81,7 @@ export default function PostContainer ({ data }) {
                 <div className="flex-1">
                     <div className="pt-4 pr-4">
                         <h1 className="text-white font-semibold text-[2rem] mb-1 leading-snug">{ title }</h1>
-                        <PostImageCarousel images={ media } />
+                        { media.length > 0 && <PostImageCarousel images={ media } /> }
                         { content && (
                             <p className="text-[#818384] text-sm mb-2">{ content }</p>
                         ) }
@@ -83,8 +102,11 @@ export default function PostContainer ({ data }) {
                     </div>
                     {/* Comments Section */ }
                     { openComments &&
-                        <div className="pr-4 pb-4 mt-2" onClick={ ()=> handleComments() }>
-                            <Comments open={ openComments } url={ commentsUrl }/>
+                        <div className="pr-4 pb-4 mt-2" onClick={ e => {
+                            e.stopPropagation();
+                            handleComments();
+                        } }>
+                            <Comments open={ openComments } url={ commentsUrl } />
                         </div>
                     }
                 </div>
