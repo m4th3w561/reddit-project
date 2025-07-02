@@ -5,8 +5,13 @@ import CacheManager from "@/components/container/CacheManager";
 export const metadata = {
   title: "Reddit Clone",
   description: "A CodeCademy Portfolio Project",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: "#161617",
 };
 

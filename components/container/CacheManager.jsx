@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { redditCache } from '@/lib/utils/cache';
@@ -74,7 +75,7 @@ const CacheManager = () => {
         onClick={() => setIsOpen(true)}
         variant="outline" 
         size="sm"
-        className="fixed bottom-4 right-4 z-50"
+        className="fixed bottom-4 right-4 z-50 hidden md:flex"
       >
         <Database className="w-4 h-4 mr-1" />
         Cache ({cacheInfo.length})
@@ -83,7 +84,7 @@ const CacheManager = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-96">
+    <div className="fixed bottom-4 right-4 z-50 w-96 hidden md:block">
       <Card className="bg-background/95 backdrop-blur border-border">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">

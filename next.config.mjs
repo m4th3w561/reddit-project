@@ -4,16 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'preview.redd.it',
+        hostname: '**',
       },
-      {
-        protocol: 'https',
-        hostname: 'i.redd.it',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i.imgur.com',
-      },
+     
     ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
@@ -24,19 +17,18 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', '@radix-ui/react-avatar', '@radix-ui/react-aspect-ratio'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  swcMinify: true,
   poweredByHeader: false,
   reactStrictMode: true,
   typescript: {
