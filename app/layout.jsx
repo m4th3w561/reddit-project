@@ -1,5 +1,4 @@
 import "./globals.css";
-import { Navbar } from "@/components/container/Navbar";
 import { StoreProvider } from "./StoreProvider";
 
 export const metadata = {
@@ -12,7 +11,6 @@ export default function RootLayout ({ children }) {
     <StoreProvider>
       <html lang="en" className="dark">
         <body className="antialiased pt-14">
-          <Navbar />
           { children }
         </body>
       </html>

@@ -1,4 +1,5 @@
 "use client";
+import { Navbar } from "@/components/container/Navbar";
 import PostContainer from "@/components/container/PostContainer";
 import SubredditsContainer from "@/components/container/SubredditsContainer";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -23,6 +24,7 @@ export default function Home () {
 
   return (
     <div className="min-h-screen px-8">
+      <Navbar />
       <div className="flex w-full max-w-6xl mx-auto gap-8">
         {/* Posts/Main Content */ } 
         <main className="flex-1 gap-4 flex flex-col py-2">

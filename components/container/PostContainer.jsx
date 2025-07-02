@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PostImageCarousel from "@/components/container/PostImageCarousel";
 import { upVote, downVote } from "@/lib/features/post/postSlice";
-import { loadCommentsByPost, commentsData, commentsStatus, commentsError } from "@/lib/features/comments/commentsSlice";
 
 export default function PostContainer ({ data }) {
     const postId = data.id;
@@ -16,28 +15,6 @@ export default function PostContainer ({ data }) {
     const content = data.selftext;
     const commentCount = data.num_comments;
     const commentsUrl = data.permalink;
-    // Helper to check if a URL is an image
-    const isImageUrl = (url) => {
-        return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
-    };
-    const isVideoUrl = (url) => {
-        return /\.(mp4|webm|ogg|mov|avi)$/i.test(url) || url?.includes("v.redd.it");
-    };
-
-    let media = [];
-    if (data.media_metadata) {
-        media = Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'));
-    } else if (data.media && data.media.reddit_video && data.media.reddit_video.fallback_url) {
-        // If it's a Reddit video, use the fallback_url
-        media = [data.media.reddit_video.fallback_url];
-    } else if (isImageUrl(data.url)) {
-        media = [data.url];
-    } else if (isVideoUrl(data.url)) {
-        media = [data.url];
-    } else {
-        media = [];
-    }
-
     const votes = data.ups;
     const postCreated = data.created_utc;
     const diff = Date.now() / 1000 - postCreated;
@@ -51,11 +28,29 @@ export default function PostContainer ({ data }) {
                     : `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) !== 1 ? 's' : ''} ago`;
 
 
-    // State to manage comments visibility
+    const isImageUrl = (url) => {
+        return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+    };
+    const isVideoUrl = (url) => {
+        return /\.(mp4|webm|ogg|mov|avi)$/i.test(url) || url?.includes("v.redd.it");
+    };
+
+    let media = [];
+    if (data.media_metadata) {
+        media = Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'));
+    } else if (data.media && data.media.reddit_video && data.media.reddit_video.fallback_url) {
+        media = [data.media.reddit_video.fallback_url];
+    } else if (isImageUrl(data.url)) {
+        media = [data.url];
+    } else if (isVideoUrl(data.url)) {
+        media = [data.url];
+    } else {
+        media = [];
+    }
+
     const [openComments, setOpenComments] = useState(false);
     const dispatch = useDispatch();
 
-    // Handlers for upvote and downvote actions
     const handleUpVote = () => {
         dispatch(upVote(postId));
     };
@@ -63,11 +58,6 @@ export default function PostContainer ({ data }) {
         dispatch(downVote(postId));
     };
 
-
-
-    const handleComments = () => {
-        setOpenComments(!openComments);
-    };
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full max-w-4xl mx-auto shadow">
             <div className="flex items-start">
@@ -102,10 +92,7 @@ export default function PostContainer ({ data }) {
                     </div>
                     {/* Comments Section */ }
                     { openComments &&
-                        <div className="pr-4 pb-4 mt-2" onClick={ e => {
-                            e.stopPropagation();
-                            handleComments();
-                        } }>
+                        <div className="pr-4 pb-4 mt-2" >
                             <Comments open={ openComments } url={ commentsUrl } />
                         </div>
                     }
