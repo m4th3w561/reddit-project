@@ -43,7 +43,6 @@ export default function SubredditsContainer({ isMobile = false }) {
     dispatch(loadPostsBySubreddit(subreddit));
   };
 
-  // Desktop version (hidden on mobile)
   if (!isMobile) {
     return (
       <aside className="hidden lg:block w-72 shrink-0">

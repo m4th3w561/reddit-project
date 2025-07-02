@@ -70,13 +70,11 @@ export default function PostContainer ({ data, fromSearch = false }) {
     return (
         <div className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
             <div className="flex items-start">
-                {/* Upvote/Downvote */}
                 <div className="flex flex-col items-center px-1 sm:px-2 pt-4 select-none shrink-0">
                     <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-6 w-6 sm:h-8 sm:w-8" onClick={handleUpVote}>▲</Button>
                     <span className="text-xs text-[#818384] font-semibold py-1">{votes}</span>
                     <Button variant="ghost" size="icon" className="text-[#818384] hover:text-white cursor-pointer h-6 w-6 sm:h-8 sm:w-8" onClick={handleDownVote}>▼</Button>
                 </div>
-                {/* Post Content */}
                 <div className="flex-1 min-w-0">
                     <div className="pt-4 pr-2 sm:pr-4">
                         <h1 className="text-white font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl mb-1 leading-tight break-words">{title}</h1>
@@ -85,7 +83,6 @@ export default function PostContainer ({ data, fromSearch = false }) {
                             <p className="text-[#818384] text-sm mb-2 break-words">{content}</p>
                         )}
                     </div>
-                    {/* Footer */}
                     <div className="flex items-center justify-between pr-2 sm:pr-4 pb-2 gap-2">
                         <div className="flex items-center gap-2 min-w-0">
                             <Avatar className="h-6 w-6 sm:h-8 sm:w-8 shrink-0">
@@ -101,7 +98,6 @@ export default function PostContainer ({ data, fromSearch = false }) {
                             <span className="text-xs">{commentCount}</span>
                         </div>
                     </div>
-                    {/* Comments Section */}
                     {openComments &&
                         <div className="pr-2 sm:pr-4 pb-4 mt-2">
                             <Comments open={openComments} url={commentsUrl} />
