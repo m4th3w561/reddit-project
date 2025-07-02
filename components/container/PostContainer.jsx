@@ -7,8 +7,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PostImageCarousel from "@/components/container/PostImageCarousel";
 import { upVote, downVote } from "@/lib/features/post/postSlice";
+import { upVote as upVoteSearch, downVote as downVoteSearch } from "@/lib/features/search/searchSlice";
 
-export default function PostContainer ({ data }) {
+export default function PostContainer ({ data, fromSearch = false }) {
     const postId = data.id;
     const username = data.author;
     const title = data.title;
@@ -52,10 +53,18 @@ export default function PostContainer ({ data }) {
     const dispatch = useDispatch();
 
     const handleUpVote = () => {
-        dispatch(upVote(postId));
+        if (fromSearch) {
+            dispatch(upVoteSearch(postId));
+        } else {
+            dispatch(upVote(postId));
+        }
     };
     const handleDownVote = () => {
-        dispatch(downVote(postId));
+        if (fromSearch) {
+            dispatch(downVoteSearch(postId));
+        } else {
+            dispatch(downVote(postId));
+        }
     };
 
     return (

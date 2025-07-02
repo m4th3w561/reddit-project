@@ -62,7 +62,7 @@ export default function SearchPage () {
                     }
                     { status === "succeeded" && posts.length === 0 && <div>No posts found.</div> }
                     { status === "succeeded" && posts.map((post, idx) => (
-                        <PostContainer key={ idx } data={ post.data } />
+                        <PostContainer key={ idx } data={ post.data } fromSearch={true} />
                     )) }
                 </main>
                 <SubredditsContainer />
