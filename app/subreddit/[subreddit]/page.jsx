@@ -31,14 +31,16 @@ export default function SubredditPage() {
             <div className="flex w-full max-w-6xl mx-auto gap-4 lg:gap-8">
                 <main className="flex-1 gap-4 flex flex-col py-2 min-w-0">
                     {status === "loading" &&
-                        [...Array(4)].map((_, index) => (
+                        [...Array(3)].map((_, index) => (
                             <div key={index} className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
                                 <div className="flex items-start">
+                                    {/* Upvote/Downvote */}
                                     <div className="flex flex-col items-center px-2 pt-4 select-none">
                                         <Skeleton className="h-6 w-6 mb-1" />
                                         <Skeleton className="h-4 w-6 mb-1" />
                                         <Skeleton className="h-6 w-6" />
                                     </div>
+                                    {/* Post Content */}
                                     <div className="flex-1 min-w-0">
                                         <div className="pt-4 pr-4">
                                             <Skeleton className="h-5 w-3/4 mb-2" />
@@ -47,6 +49,7 @@ export default function SubredditPage() {
                                             </AspectRatio>
                                             <Skeleton className="h-5 w-3/4 mb-2" />
                                         </div>
+                                        {/* Footer */}
                                         <div className="flex items-center justify-between pr-4 pb-2">
                                             <div className="flex items-center gap-2">
                                                 <Skeleton className="h-8 w-8 rounded-full" />

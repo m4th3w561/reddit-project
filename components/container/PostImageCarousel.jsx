@@ -6,10 +6,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-export default function PostImageCarousel ({ images }) {
+export default function PostImageCarousel({ images }) {
   if (!images?.length) {
-    return;
+    return null;
   }
 
   const isVideo = (url) => {
@@ -20,42 +21,46 @@ export default function PostImageCarousel ({ images }) {
   return (
     <Carousel className="w-full mb-4">
       <CarouselContent>
-        { images.map((media, idx) => (
-          <CarouselItem key={ idx } className="flex justify-center">
-            <div className="max-w-md w-full max-h-[40rem]">
+        {images.map((media, idx) => (
+          <CarouselItem key={idx} className="flex justify-center">
+            <div className="max-w-md w-full">
               {isVideo(media) ? (
-                <video
-                  src={media}
-                  controls
-                  className="w-full h-auto max-h-[40rem] object-contain rounded-md"
-                  preload="metadata"
-                >
-                  Your browser doesn't support the video file.
-                </video>
-              ) : (
-                media.toLowerCase().endsWith('.gif') ? (
+                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
+                  <video
+                    src={media}
+                    controls
+                    className="w-full h-full object-contain rounded-md"
+                    preload="metadata"
+                  >
+                    Your browser doesn't support the video file.
+                  </video>
+                </AspectRatio>
+              ) : media.toLowerCase().endsWith('.gif') ? (
+                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
                   <img
                     src={media}
                     alt={`Post visual ${idx + 1}`}
-                    width={400}
-                    className="w-full h-auto max-h-[40rem] object-contain rounded-md"
+                    className="w-full h-full object-contain rounded-md"
+                    loading={idx === 0 ? "eager" : "lazy"}
                     style={{ display: 'block' }}
                   />
-                ) : (
+                </AspectRatio>
+              ) : (
+                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
                   <Image
-                    src={ media }
-                    alt={ `Post visual ${idx + 1}` }
-                    width={ 400 }
-                    height={ 0 }
-                    className="w-full h-auto max-h-[40rem] object-contain rounded-md"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    priority={ idx === 0 }
+                    src={media}
+                    alt={`Post visual ${idx + 1}`}
+                    fill
+                    className="object-contain rounded-md"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+                    priority={idx === 0}
+                    loading={idx === 0 ? "eager" : "lazy"}
                   />
-                )
+                </AspectRatio>
               )}
             </div>
           </CarouselItem>
-        )) }
+        ))}
       </CarouselContent>
       {images.length > 1 && (
         <>

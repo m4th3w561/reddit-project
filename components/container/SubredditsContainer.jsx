@@ -43,6 +43,7 @@ export default function SubredditsContainer({ isMobile = false }) {
     dispatch(loadPostsBySubreddit(subreddit));
   };
 
+  // Desktop version (hidden on mobile)
   if (!isMobile) {
     return (
       <aside className="hidden lg:block w-72 shrink-0">
@@ -61,10 +62,10 @@ export default function SubredditsContainer({ isMobile = false }) {
                   }`}
                   onClick={() => handleSubredditClick(idx)}
                 >
-                  <Avatar>
-                    <AvatarImage src={`/${sub.icon}`} alt={sub.icon} />
-                    <AvatarFallback>{sub.fallback}</AvatarFallback>
-                  </Avatar>
+                                  <Avatar className="w-8 h-8">
+                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} className="object-cover" />
+                  <AvatarFallback className="text-sm">{sub.fallback}</AvatarFallback>
+                </Avatar>
                   <span className="font-medium text-sm flex-1">{sub.name}</span>
                 </button>
               </li>
@@ -93,9 +94,9 @@ export default function SubredditsContainer({ isMobile = false }) {
                 }`}
                 onClick={() => handleSubredditClick(idx)}
               >
-                <Avatar>
-                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} />
-                  <AvatarFallback>{sub.fallback}</AvatarFallback>
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} className="object-cover" />
+                  <AvatarFallback className="text-sm">{sub.fallback}</AvatarFallback>
                 </Avatar>
                 <span className="font-medium text-sm flex-1">{sub.name}</span>
               </button>

@@ -2,11 +2,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { commentsData, commentsStatus, commentsError } from "@/lib/features/comments/commentsSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import Comment from "./Comment";
 import { loadCommentsByPost } from "@/lib/features/comments/commentsSlice";
 
-export default function Comments ({ open, url }) {
+const Comments = memo(function Comments({ open, url }) {
     const data = useSelector(commentsData);
     const status = useSelector(commentsStatus);
     const error = useSelector(commentsError);
@@ -32,7 +32,7 @@ export default function Comments ({ open, url }) {
         <div className="space-y-2">
             {status === "loading" ? (
                 <>
-                    {[...Array(4)].map((_, index) => (
+                    {[...Array(2)].map((_, index) => (
                         <div key={index} className="bg-[#232324] rounded-md p-2 sm:p-3">
                             <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center gap-2">
@@ -64,4 +64,6 @@ export default function Comments ({ open, url }) {
             )}
         </div>
     );
-}
+});
+
+export default Comments;

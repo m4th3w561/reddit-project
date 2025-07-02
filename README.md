@@ -25,6 +25,7 @@ A full-stack Reddit clone built with Next.js, React, Redux Toolkit, and Tailwind
 ## Getting Started
 
 1. **Install dependencies:**
+
    ```bash
    npm install
    # or
@@ -36,6 +37,7 @@ A full-stack Reddit clone built with Next.js, React, Redux Toolkit, and Tailwind
    ```
 
 2. **Run the development server:**
+
    ```bash
    npm run dev
    # or
@@ -80,6 +82,7 @@ A full-stack Reddit clone built with Next.js, React, Redux Toolkit, and Tailwind
 ## Dependencies
 
 See `package.json` for a full list. Key dependencies include:
+
 - `next`, `react`, `redux`, `@reduxjs/toolkit`, `tailwindcss`, `shadcn/ui`, `lucide-react`, `sonner`
 
 ## License
