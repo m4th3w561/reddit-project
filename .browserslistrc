@@ -1,0 +1,18 @@
+# Modern browsers for mobile optimization
+# This reduces polyfills and transforms for better performance
+
+# Mobile browsers
+iOS >= 14
+Android >= 81
+
+# Desktop browsers  
+Chrome >= 91
+Firefox >= 90
+Safari >= 14
+Edge >= 91
+
+# Remove old browsers to reduce bundle size
+not IE 11
+not IE_Mob 11
+not dead
+not < 0.5% 

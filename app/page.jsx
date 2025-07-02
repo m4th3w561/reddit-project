@@ -7,7 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { postsData, postsStatus, postsError } from "@/lib/features/post/postSlice";
 
@@ -15,7 +15,8 @@ export default function Home() {
   const posts = useSelector(postsData);
   const status = useSelector(postsStatus);
   const error = useSelector(postsError);
-  const [visiblePosts, setVisiblePosts] = useState(5); // Only show 5 posts initially
+  const [visiblePosts, setVisiblePosts] = useState(3); // Start with only 3 posts for mobile
+  const loadMoreRef = useRef(null);
 
   useEffect(() => {
     if (status === "failed" && error) {
@@ -28,20 +29,36 @@ export default function Home() {
     return posts.slice(0, visiblePosts);
   }, [posts, visiblePosts]);
 
-  // Load more posts when user scrolls near bottom
+  // Intersection Observer for loading more posts
+  const loadMorePosts = useCallback(() => {
+    if (visiblePosts < posts.length) {
+      setVisiblePosts(prev => Math.min(prev + 2, posts.length)); // Load 2 at a time for mobile
+    }
+  }, [visiblePosts, posts.length]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop
-        >= document.documentElement.offsetHeight - 1000
-      ) {
-        setVisiblePosts(prev => Math.min(prev + 3, posts.length));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visiblePosts < posts.length) {
+          loadMorePosts();
+        }
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before the element is visible
+        threshold: 0.1,
+      }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
       }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [posts.length]);
+  }, [loadMorePosts, visiblePosts, posts.length]);
 
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-8">
@@ -52,7 +69,7 @@ export default function Home() {
         <main className="flex-1 gap-4 flex flex-col py-2 min-w-0">
           {status === "loading" ? (
             // Reduced skeleton items to improve performance
-            [...Array(3)].map((_, index) => (
+            [...Array(2)].map((_, index) => (
               <div key={index} className="bg-[#161617] border border-[#222] rounded-lg p-0 overflow-hidden w-full mx-auto shadow">
                 <div className="flex items-start">
                   {/* Upvote/Downvote */}
@@ -65,7 +82,7 @@ export default function Home() {
                   <div className="flex-1 min-w-0">
                     <div className="pt-4 pr-4">
                       <Skeleton className="h-6 w-3/4 mb-2" />
-                      <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md w-full mb-4">
+                      <AspectRatio ratio={4 / 3} className="bg-[#232324] rounded-md w-full mb-4">
                         <Skeleton className="w-full h-full rounded-md" />
                       </AspectRatio>
                       <Skeleton className="h-4 w-1/2 mb-2" />
@@ -88,8 +105,11 @@ export default function Home() {
                 <PostContainer key={`${post.data.id}-${idx}`} data={post.data} />
               ))}
               {visiblePosts < posts.length && (
-                <div className="flex justify-center py-4">
-                  <Skeleton className="h-8 w-48" />
+                <div 
+                  ref={loadMoreRef}
+                  className="flex justify-center py-4"
+                >
+                  <div className="loading-skeleton h-8 w-48 rounded-md"></div>
                 </div>
               )}
             </>

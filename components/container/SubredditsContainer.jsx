@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { loadPostsBySubreddit } from "@/lib/features/post/postSlice";
 import { useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
 
 const subreddits = [
   { name: "wallstreetbets", icon: "subredditsIcon/wallstreetbets.png", fallback: "W" },
@@ -62,10 +63,26 @@ export default function SubredditsContainer({ isMobile = false }) {
                   }`}
                   onClick={() => handleSubredditClick(idx)}
                 >
-                                  <Avatar className="w-8 h-8">
-                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} className="object-cover" />
-                  <AvatarFallback className="text-sm">{sub.fallback}</AvatarFallback>
-                </Avatar>
+                  <div className="relative w-8 h-8 shrink-0">
+                    <Image
+                      src={`/${sub.icon}`}
+                      alt={sub.name}
+                      fill
+                      className="object-cover rounded-full"
+                      sizes="32px"
+                      quality={75}
+                      loading={idx < 3 ? "eager" : "lazy"}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div 
+                      className="absolute inset-0 bg-[#3a3a3c] rounded-full items-center justify-center text-white text-sm font-medium hidden"
+                    >
+                      {sub.fallback}
+                    </div>
+                  </div>
                   <span className="font-medium text-sm flex-1">{sub.name}</span>
                 </button>
               </li>
@@ -94,10 +111,26 @@ export default function SubredditsContainer({ isMobile = false }) {
                 }`}
                 onClick={() => handleSubredditClick(idx)}
               >
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} className="object-cover" />
-                  <AvatarFallback className="text-sm">{sub.fallback}</AvatarFallback>
-                </Avatar>
+                <div className="relative w-8 h-8 shrink-0">
+                  <Image
+                    src={`/${sub.icon}`}
+                    alt={sub.name}
+                    fill
+                    className="object-cover rounded-full"
+                    sizes="32px"
+                    quality={75}
+                    loading={idx < 3 ? "eager" : "lazy"}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 bg-[#3a3a3c] rounded-full items-center justify-center text-white text-sm font-medium hidden"
+                  >
+                    {sub.fallback}
+                  </div>
+                </div>
                 <span className="font-medium text-sm flex-1">{sub.name}</span>
               </button>
             </li>

@@ -1,11 +1,18 @@
 import "./globals.css";
 import { StoreProvider } from "./StoreProvider";
+import CacheManager from "@/components/container/CacheManager";
 
 export const metadata = {
   title: "Reddit Clone",
   description: "A CodeCademy Portfolio Project",
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#161617",
 };
 
 export default function RootLayout({ children }) {
@@ -13,15 +20,17 @@ export default function RootLayout({ children }) {
     <StoreProvider>
       <html lang="en" className="dark">
         <head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="dns-prefetch" href="https://www.reddit.com" />
+          {/* Preconnect to critical domains only */}
+          <link rel="preconnect" href="https://www.reddit.com" />
           <link rel="dns-prefetch" href="https://preview.redd.it" />
           <link rel="dns-prefetch" href="https://i.redd.it" />
           <link rel="dns-prefetch" href="https://i.imgur.com" />
+          {/* Preload critical resources */}
+          <link rel="preload" href="/reddit.svg" as="image" type="image/svg+xml" />
         </head>
-        <body className="antialiased pt-14 font-sans">
+        <body className="antialiased pt-14">
           {children}
+          <CacheManager />
         </body>
       </html>
     </StoreProvider>
