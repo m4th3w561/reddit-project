@@ -23,38 +23,43 @@ export default function PostImageCarousel({ images }) {
       <CarouselContent>
         {images.map((media, idx) => (
           <CarouselItem key={idx} className="flex justify-center">
-            <div className="max-w-md w-full">
+            <div className="w-full max-w-sm sm:max-w-md">
               {isVideo(media) ? (
-                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
+                <AspectRatio ratio={4 / 3} className="bg-[#232324] rounded-md">
                   <video
                     src={media}
                     controls
                     className="w-full h-full object-contain rounded-md"
                     preload="metadata"
+                    poster=""
                   >
                     Your browser doesn't support the video file.
                   </video>
                 </AspectRatio>
               ) : media.toLowerCase().endsWith('.gif') ? (
-                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
+                <AspectRatio ratio={4 / 3} className="bg-[#232324] rounded-md">
                   <img
                     src={media}
                     alt={`Post visual ${idx + 1}`}
                     className="w-full h-full object-contain rounded-md"
                     loading={idx === 0 ? "eager" : "lazy"}
+                    decoding="async"
                     style={{ display: 'block' }}
                   />
                 </AspectRatio>
               ) : (
-                <AspectRatio ratio={16 / 9} className="bg-[#232324] rounded-md">
+                <AspectRatio ratio={4 / 3} className="bg-[#232324] rounded-md">
                   <Image
                     src={media}
                     alt={`Post visual ${idx + 1}`}
                     fill
                     className="object-contain rounded-md"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+                    sizes="(max-width: 480px) 95vw, (max-width: 768px) 90vw, (max-width: 1024px) 60vw, 400px"
                     priority={idx === 0}
                     loading={idx === 0 ? "eager" : "lazy"}
+                    quality={85}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                 </AspectRatio>
               )}
