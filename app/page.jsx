@@ -23,7 +23,7 @@ export default function Home () {
   }, [status, error]);
 
   return (
-    <div className="min-h-screen px-8">
+    <div className="min-h-screen px-8"> 
       <Navbar />
       <div className="flex w-full max-w-6xl mx-auto gap-8">
         {/* Posts/Main Content */ } 

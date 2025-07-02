@@ -12,7 +12,6 @@ export default function PostImageCarousel ({ images }) {
     return;
   }
 
-  // Helper function to check if URL is a video
   const isVideo = (url) => {
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
     return videoExtensions.some(ext => url.toLowerCase().includes(ext)) || url.includes("v.redd.it");
@@ -31,31 +30,39 @@ export default function PostImageCarousel ({ images }) {
                   className="w-full h-auto max-h-[40rem] object-contain rounded-md"
                   preload="metadata"
                 >
-                  Your browser does not support the video tag.
+                  Your browser doesn't support the video file.
                 </video>
               ) : (
-                <Image
-                  src={ media }
-                  alt={ `Post visual ${idx + 1}` }
-                  width={ 400 }
-                  height={ 0 }
-                  className="w-full h-auto max-h-[40rem] object-contain rounded-md"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  priority={ idx === 0 }
-                />
+                media.toLowerCase().endsWith('.gif') ? (
+                  <img
+                    src={media}
+                    alt={`Post visual ${idx + 1}`}
+                    width={400}
+                    className="w-full h-auto max-h-[40rem] object-contain rounded-md"
+                    style={{ display: 'block' }}
+                  />
+                ) : (
+                  <Image
+                    src={ media }
+                    alt={ `Post visual ${idx + 1}` }
+                    width={ 400 }
+                    height={ 0 }
+                    className="w-full h-auto max-h-[40rem] object-contain rounded-md"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    priority={ idx === 0 }
+                  />
+                )
               )}
             </div>
           </CarouselItem>
         )) }
       </CarouselContent>
-      {/* Built-in arrows - only show if more than 1 image */ }
       {images.length > 1 && (
         <>
           <CarouselPrevious className="left-2 cursor-pointer" />
           <CarouselNext className="right-2 cursor-pointer" />
         </>
       )}
-      {/* Dots are built-in and can be customized if you want */ }
     </Carousel>
   );
 }

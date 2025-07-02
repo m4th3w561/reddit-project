@@ -56,9 +56,11 @@ export default function Comments ({ open, url }) {
             ) : data.length === 0 ? (
                 <div className="text-center text-muted-foreground">No comments yet.</div>
             ) : (
-                data.map((comment) => (
+                data
+                  .filter(comment => comment && comment.data && comment.data.body)
+                  .map((comment) => (
                     <Comment key={ comment.data.id } comment={ comment } />
-                ))
+                  ))
             ) }
         </div>
     );

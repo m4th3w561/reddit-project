@@ -3,15 +3,23 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { loadPostsBySearch } from "@/lib/features/search/searchSlice";
 
 export function Navbar() {
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (search.trim()) {
+      const query = search.trim().replace(/\s+/g, "+");
       toast.success(`Searching for: ${search}`);
+      dispatch(loadPostsBySearch(query));
+      router.push(`/search/${query}`);
     } else {
       toast.error("Please enter a search term");
     }
@@ -24,12 +32,10 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#161617] border-b border-[#222] h-12 flex items-center">
       <div className="w-full flex items-center justify-between max-w-screen-2xl mx-auto px-4">
-        {/* Logo and Title - Left aligned */}
         <div className="flex items-center gap-2 min-w-[120px]">
           <Image src="/reddit.svg" alt="Reddit Logo" width={24} height={24} className="mr-1" />
           <span className="text-white font-bold text-lg tracking-tight">Reddit Clone</span>
         </div>
-        {/* Search Bar - Centered */}
         <div className="flex-1 flex justify-center">
           <div className="relative w-full max-w-xs">
             <Input

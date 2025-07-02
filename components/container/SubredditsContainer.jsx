@@ -1,10 +1,10 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { loadPostsBySubreddit } from "@/lib/features/post/postSlice";
 import { useDispatch } from "react-redux";
-import {useEffect} from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 const subreddits = [
   { name: "wallstreetbets", icon: "subredditsIcon/wallstreetbets.png", fallback: "W" },
@@ -17,20 +17,32 @@ const subreddits = [
   { name: "startups", icon: "subredditsIcon/startups.png", fallback: "S" },
   { name: "ycombinator", icon: 'subredditsIcon/ycombinator.png', fallback: "Y" },
 ];
-
-export default function SubredditsContainer () {
+export default function SubredditsContainer() {
   const [selected, setSelected] = useState(0);
   const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
 
-useEffect(() => {
-  const subreddit = subreddits[selected].name;
-  dispatch(loadPostsBySubreddit(subreddit));
-}, [dispatch, selected]);
-  
-const handleSubredditClick = (index) => {
-  setSelected(index); 
-};
-  
+
+  useEffect(() => {
+    const match = pathname.match(/\/subreddit\/([^/]+)/);
+    if (match) {
+      const idx = subreddits.findIndex(s => s.name.toLowerCase() === match[1].toLowerCase());
+      if (idx !== -1) setSelected(idx);
+      dispatch(loadPostsBySubreddit(match[1]));
+    } else {
+      setSelected(0);
+      dispatch(loadPostsBySubreddit(subreddits[0].name));
+    }
+  }, [pathname, dispatch]);
+
+  const handleSubredditClick = (index) => {
+    setSelected(index);
+    const subreddit = subreddits[index].name;
+    router.push(`/subreddit/${subreddit}`);
+    dispatch(loadPostsBySubreddit(subreddit));
+  };
+
   return (
     <aside className="hidden lg:block w-72 shrink-0">
       <Card className="sticky top-16 bg-[#161617] border-[#222] p-4">
@@ -48,7 +60,7 @@ const handleSubredditClick = (index) => {
                 onClick={ () => handleSubredditClick(idx) }
               >
                 <Avatar>
-                  <AvatarImage src={ sub.icon } alt={ sub.icon } />
+                  <AvatarImage src={`/${sub.icon}`} alt={sub.icon} />
                   <AvatarFallback>{ sub.fallback }</AvatarFallback>
                 </Avatar>
                 <span className="font-medium text-sm flex-1">{ sub.name }</span>
