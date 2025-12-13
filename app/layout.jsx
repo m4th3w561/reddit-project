@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
           {/* Preload critical resources */}
           <link rel="preload" href="/reddit.svg" as="image" type="image/svg+xml" />
         </head>
-        <body className="antialiased pt-14">
+        <body className="antialiased pt-14" suppressHydrationWarning>
           {children}
           <CacheManager />
         </body>

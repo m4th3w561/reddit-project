@@ -30,15 +30,17 @@ const PostContainer = memo(function PostContainer({ data, fromSearch = false }) 
 
 
     const isImageUrl = (url) => {
-        return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+        return url && /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
     };
     const isVideoUrl = (url) => {
-        return /\.(mp4|webm|ogg|mov|avi)$/i.test(url) || url?.includes("v.redd.it");
+        return url && (/\.(mp4|webm|ogg|mov|avi)$/i.test(url) || url.includes("v.redd.it"));
     };
 
     let media = [];
     if (data.media_metadata) {
-        media = Object.values(data.media_metadata).map(media => media.s.u.replace(/&amp;/g, '&'));
+        media = Object.values(data.media_metadata)
+            .map(mediaItem => mediaItem?.s?.u?.replace(/&amp;/g, '&'))
+            .filter(url => url !== undefined && url !== null);
     } else if (data.media && data.media.reddit_video && data.media.reddit_video.fallback_url) {
         media = [data.media.reddit_video.fallback_url];
     } else if (isImageUrl(data.url)) {
@@ -89,9 +91,9 @@ const PostContainer = memo(function PostContainer({ data, fromSearch = false }) 
                     <div className="flex items-center justify-between pr-2 sm:pr-4 pb-2 gap-2">
                         <div className="flex items-center gap-2 min-w-0">
                             <Avatar className="h-6 w-6 sm:h-8 sm:w-8 shrink-0">
-                                <AvatarFallback>{username[0]}</AvatarFallback>
+                                <AvatarFallback>{username?.[0] || '?'}</AvatarFallback>
                             </Avatar>
-                            <span className="text-xs text-white font-medium truncate">{username}</span>
+                            <span className="text-xs text-white font-medium truncate">{username || 'Unknown'}</span>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                             <span className="text-xs text-[#818384] hidden sm:block">{timeAgo}</span>
